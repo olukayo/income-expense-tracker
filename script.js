@@ -5,12 +5,14 @@ const expensesEl = document.getElementById("expenses");
 const transactionForm = document.getElementById("transaction-form");
 const transactionList = document.getElementById("transaction-list");
 
-// Initialize transactions from local storage or set to an empty array
+// Initialize from local storage or set default values
 let transactions = JSON.parse(localStorage.getItem("transactions")) || [];
+let totalBalance = parseFloat(localStorage.getItem("totalBalance")) || 0;
 
-// Save transactions to local storage
-function saveTransactions() {
+// Save transactions and balance to local storage
+function saveData() {
   localStorage.setItem("transactions", JSON.stringify(transactions));
+  localStorage.setItem("totalBalance", totalBalance.toFixed(2));
 }
 
 // Update UI
@@ -21,10 +23,9 @@ function updateUI() {
   const expenses = transactions
     .filter((t) => t.amount < 0)
     .reduce((sum, t) => sum + Math.abs(t.amount), 0);
-  const balance = income - expenses;
 
   // Update DOM
-  balanceEl.textContent = `N${balance.toFixed(2)}`;
+  balanceEl.textContent = `N${totalBalance.toFixed(2)}`; // Keep balance constant
   incomeEl.textContent = `N${income.toFixed(2)}`;
   expensesEl.textContent = `N${expenses.toFixed(2)}`;
 
@@ -41,7 +42,7 @@ function updateUI() {
   });
 
   // Save to Local Storage
-  saveTransactions();
+  saveData();
 }
 
 // Add Transaction
@@ -59,7 +60,8 @@ transactionForm.addEventListener("submit", (e) => {
     return;
   }
 
-  // Add to transactions and update UI
+  // Update total balance and add transaction
+  totalBalance += amount;
   transactions.push({ description, amount });
   updateUI();
   transactionForm.reset();
@@ -69,10 +71,10 @@ transactionForm.addEventListener("submit", (e) => {
 transactionList.addEventListener("click", (e) => {
   if (e.target.classList.contains("delete-btn")) {
     const index = e.target.getAttribute("data-index");
-    transactions.splice(index, 1);
-    updateUI();
+    transactions.splice(index, 1); // Remove the transaction
+    updateUI(); // Update the UI without recalculating the balance
   }
 });
 
-// Initial UI
+// Initialize UI
 updateUI();
