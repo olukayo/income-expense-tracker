@@ -1,11 +1,11 @@
-// script.js
+// DOM Elements
 const balanceEl = document.getElementById("balance");
 const incomeEl = document.getElementById("income");
 const expensesEl = document.getElementById("expenses");
 const transactionForm = document.getElementById("transaction-form");
 const transactionList = document.getElementById("transaction-list");
 
-let transactions = [];
+let transactions = JSON.parse(localStorage.getItem("transactions")) || [];
 
 // Update UI
 function updateUI() {
@@ -17,7 +17,7 @@ function updateUI() {
     .reduce((sum, t) => sum + Math.abs(t.amount), 0);
   const balance = income - expenses;
 
-  balanceEl.textContent = balance.toFixed(2);
+  balanceEl.textContent = `N${balance.toFixed(2)}`;
   incomeEl.textContent = `N${income.toFixed(2)}`;
   expensesEl.textContent = `N${expenses.toFixed(2)}`;
 
@@ -27,30 +27,43 @@ function updateUI() {
     li.className = t.amount > 0 ? "income-item" : "expense-item";
     li.innerHTML = `
       ${t.description} <span>${t.amount > 0 ? "+" : "-"}N${Math.abs(t.amount).toFixed(2)}</span>
-      <button class="delete-btn" onclick="deleteTransaction(${index})">x</button>
+      <button class="delete-btn" data-index="${index}">x</button>
     `;
     transactionList.appendChild(li);
   });
+
+  // Save to Local Storage
+  localStorage.setItem("transactions", JSON.stringify(transactions));
 }
 
 // Add Transaction
 transactionForm.addEventListener("submit", (e) => {
   e.preventDefault();
-  const description = document.getElementById("description").value;
+  const description = document.getElementById("description").value.trim();
   const amount = parseFloat(document.getElementById("amount").value);
 
-  if (description && !isNaN(amount)) {
-    transactions.push({ description, amount });
-    updateUI();
-    transactionForm.reset();
+  if (!description) {
+    alert("Description cannot be empty.");
+    return;
   }
+  if (isNaN(amount)) {
+    alert("Please enter a valid number for the amount.");
+    return;
+  }
+
+  transactions.push({ description, amount });
+  updateUI();
+  transactionForm.reset();
 });
 
 // Delete Transaction
-function deleteTransaction(index) {
-  transactions.splice(index, 1);
-  updateUI();
-}
+transactionList.addEventListener("click", (e) => {
+  if (e.target.classList.contains("delete-btn")) {
+    const index = e.target.getAttribute("data-index");
+    transactions.splice(index, 1);
+    updateUI();
+  }
+});
 
 // Initial UI
 updateUI();
