@@ -4,6 +4,7 @@ const incomeEl = document.getElementById("income");
 const expensesEl = document.getElementById("expenses");
 const transactionForm = document.getElementById("transaction-form");
 const transactionList = document.getElementById("transaction-list");
+const resetButton = document.getElementById("reset-button"); // Assume there's a reset button in HTML
 
 // Initialize from local storage or set default values
 let transactions = JSON.parse(localStorage.getItem("transactions")) || [];
@@ -75,6 +76,16 @@ transactionList.addEventListener("click", (e) => {
     updateUI(); // Update the UI without recalculating the balance
   }
 });
+
+// Reset Balance Function
+function resetBalance() {
+  totalBalance = 0; // Reset balance to 0
+  transactions = []; // Clear all transactions
+  updateUI(); // Update the UI
+}
+
+// Attach the reset function to the reset button
+resetButton.addEventListener("click", resetBalance);
 
 // Initialize UI
 updateUI();
