@@ -5,7 +5,13 @@ const expensesEl = document.getElementById("expenses");
 const transactionForm = document.getElementById("transaction-form");
 const transactionList = document.getElementById("transaction-list");
 
+// Initialize transactions from local storage or set to an empty array
 let transactions = JSON.parse(localStorage.getItem("transactions")) || [];
+
+// Save transactions to local storage
+function saveTransactions() {
+  localStorage.setItem("transactions", JSON.stringify(transactions));
+}
 
 // Update UI
 function updateUI() {
@@ -17,10 +23,12 @@ function updateUI() {
     .reduce((sum, t) => sum + Math.abs(t.amount), 0);
   const balance = income - expenses;
 
+  // Update DOM
   balanceEl.textContent = `N${balance.toFixed(2)}`;
   incomeEl.textContent = `N${income.toFixed(2)}`;
   expensesEl.textContent = `N${expenses.toFixed(2)}`;
 
+  // Update Transaction List
   transactionList.innerHTML = "";
   transactions.forEach((t, index) => {
     const li = document.createElement("li");
@@ -33,7 +41,7 @@ function updateUI() {
   });
 
   // Save to Local Storage
-  localStorage.setItem("transactions", JSON.stringify(transactions));
+  saveTransactions();
 }
 
 // Add Transaction
@@ -51,6 +59,7 @@ transactionForm.addEventListener("submit", (e) => {
     return;
   }
 
+  // Add to transactions and update UI
   transactions.push({ description, amount });
   updateUI();
   transactionForm.reset();
