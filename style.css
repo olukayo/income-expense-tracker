@@ -1,4 +1,3 @@
-/* styles.css */
 body {
   font-family: Arial, sans-serif;
   margin: 0;
@@ -8,8 +7,9 @@ body {
 }
 
 .container {
+  width: 90%;
   max-width: 400px;
-  margin: 50px auto;
+  margin: 20px auto;
   background: #fff;
   padding: 20px;
   border-radius: 10px;
@@ -18,22 +18,25 @@ body {
 
 h1 {
   text-align: center;
+  font-size: 1.8rem;
 }
 
 .balance {
   margin: 20px 0;
   text-align: center;
-  font-size: 24px;
+  font-size: 1.5rem;
 }
 
 .summary {
   display: flex;
   justify-content: space-between;
   margin: 20px 0;
+  gap: 10px;
 }
 
 .summary div {
   text-align: center;
+  flex: 1;
 }
 
 .income {
@@ -50,11 +53,16 @@ form {
   gap: 10px;
 }
 
-input, button {
+input,
+button {
   padding: 10px;
-  font-size: 16px;
+  font-size: 1rem;
   border: 1px solid #ccc;
   border-radius: 5px;
+}
+
+input:invalid {
+  border-color: red;
 }
 
 button {
@@ -68,6 +76,12 @@ button:hover {
   background-color: #0056b3;
 }
 
+button:focus,
+.delete-btn:focus {
+  outline: 2px solid #0056b3;
+  outline-offset: 2px;
+}
+
 #transaction-list {
   list-style: none;
   padding: 0;
@@ -76,10 +90,22 @@ button:hover {
 #transaction-list li {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin: 10px 0;
   padding: 10px;
   border-radius: 5px;
   background-color: #f9f9f9;
+  transition: background-color 0.3s ease;
+}
+
+#transaction-list li:hover {
+  background-color: #e9ecef;
+}
+
+#transaction-list li small {
+  font-size: 12px;
+  color: #888;
+  margin-left: 10px;
 }
 
 .income-item {
@@ -96,4 +122,61 @@ button:hover {
   color: red;
   cursor: pointer;
   font-size: 16px;
+}
+
+.delete-btn:hover {
+  color: darkred;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  .balance {
+    font-size: 1.2rem;
+  }
+
+  input,
+  button {
+    font-size: 0.9rem;
+  }
+
+  .summary {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .summary div {
+    margin-bottom: 10px;
+  }
+
+  #transaction-list li {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+}
+
+@media (max-width: 400px) {
+  .container {
+    padding: 15px;
+  }
+
+  h1 {
+    font-size: 1.3rem;
+  }
+
+  .balance {
+    font-size: 1rem;
+  }
+
+  button {
+    padding: 8px;
+  }
+
+  input {
+    padding: 8px;
+  }
 }
