@@ -183,3 +183,46 @@ button:focus,
     padding: 0.6rem;
   }
 }
+#transaction-history {
+  display: block;
+  text-align: center;
+  margin: 15px 0;
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #fff;
+  background-color: #28a745; /* Green to signify action */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+#transaction-history a {
+  text-decoration: none;
+  color: inherit;
+}
+
+#transaction-history:hover {
+  background-color: #218838;
+  transform: translateY(-2px);
+}
+
+#transaction-history:focus {
+  outline: 2px solid #218838;
+  outline-offset: 2px;
+}
+
+#transaction-history:active {
+  transform: translateY(0);
+  background-color: #1e7e34;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 600px) {
+  #transaction-history {
+    font-size: 0.9rem;
+    padding: 8px 16px;
+  }
+}
