@@ -9,32 +9,43 @@
 <body>
   <div class="container">
     <h1>Income & Expenses Tracker</h1>
+    
+    <!-- Display Balance -->
     <div class="balance">
-      <h2>Balance: <span id="balance">0.00</span></h2>
+      <h2>Balance: <span id="balance" aria-live="polite">N0.00</span></h2>
     </div>
-    <button id="reset-button">Reset Balance</button>
-
+    
+    <button id="reset-button" aria-label="Reset Balance">Reset Balance</button>
+    
+    <!-- Summary Section -->
     <div class="summary">
       <div>
         <h3>Income</h3>
-        <p class="income" id="income">N0.00</p>
+        <p class="income" id="income" aria-live="polite">N0.00</p>
       </div>
       <div>
         <h3>Expenses</h3>
-        <p class="expenses" id="expenses">N0.00</p>
+        <p class="expenses" id="expenses" aria-live="polite">N0.00</p>
       </div>
     </div>
-    <button id="transaction-history"><a href="#/tansaction.html">Transaction history</a></button>
-    <form id="transaction-form">
-      <input type="text" id="description" placeholder="Description" required>
-      <input type="number" id="amount" placeholder="Amount" required>
-      <input type="date" id="date" />
-      <button type="submit">Add Transaction</button>
-      
 
+    <!-- Transaction History -->
+    <button id="transaction-history">
+      <a href="transaction.html" aria-label="View Transaction History">Transaction History</a>
+    </button>
+
+    <!-- Add Transaction Form -->
+    <form id="transaction-form">
+      <input type="text" id="description" placeholder="Description" required aria-label="Transaction Description">
+      <input type="number" id="amount" placeholder="Amount" required aria-label="Transaction Amount">
+      <input type="date" id="date" aria-label="Transaction Date" placeholder="Select Date" value="">
+      <button type="submit">Add Transaction</button>
     </form>
-    <ul id="transaction-list"></ul>
+
+    <!-- Transaction List -->
+    <ul id="transaction-list" aria-label="Transaction List"></ul>
   </div>
+  
   <script src="script.js"></script>
 </body>
 </html>
