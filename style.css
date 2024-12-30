@@ -218,6 +218,18 @@ button:focus,
   transform: translateY(0);
   background-color: #1e7e34;
 }
+#transaction-list {
+  transition: all 0.3s ease;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+#transaction-list[style*="display: none"] {
+  max-height: 0;
+  overflow: hidden;
+  padding: 0;
+}
+
 
 /* Responsive Adjustments */
 @media (max-width: 600px) {

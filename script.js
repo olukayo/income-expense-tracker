@@ -50,6 +50,35 @@ function updateUI() {
   saveData();
 }
 
+// DOM Elements
+const transactionHistoryButton = document.getElementById("transaction-history");
+const transactionListContainer = document.getElementById("transaction-list");
+
+// Toggle Transaction History Visibility
+transactionHistoryButton.addEventListener("click", () => {
+  // If transaction list is hidden, show it
+  if (transactionListContainer.style.display === "none" || !transactionListContainer.style.display) {
+    transactionListContainer.style.display = "block";
+    transactionHistoryButton.textContent = "Hide Transaction History";
+  } else {
+    // If transaction list is visible, hide it
+    transactionListContainer.style.display = "none";
+    transactionHistoryButton.textContent = "Transaction History";
+  }
+});
+
+// Initialize UI
+function initializeTransactionList() {
+  if (transactions.length === 0) {
+    transactionListContainer.style.display = "none"; // Hide if no transactions exist
+    transactionHistoryButton.textContent = "Transaction History";
+  }
+}
+
+// Call initialize function when the page loads
+initializeTransactionList();
+
+
 // Add Transaction
 transactionForm.addEventListener("submit", (e) => {
   e.preventDefault();
