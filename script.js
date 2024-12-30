@@ -153,5 +153,10 @@ const formatter = new Intl.NumberFormat("en-NG", {
   currency: "NGN",
 });
 
+
+transactionHistoryButton.addEventListener("click", () => {
+  window.location.href = "transaction.html"; // Navigate to transaction.html
+});
+
 // Initialize UI
 updateUI();
