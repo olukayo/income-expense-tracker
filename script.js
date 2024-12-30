@@ -78,6 +78,82 @@ function initializeTransactionList() {
 // Call initialize function when the page loads
 initializeTransactionList();
 
+// DOM Elements
+
+
+// Open Transaction History in a New Window
+transactionHistoryButton.addEventListener("click", () => {
+  const newWindow = window.open("", "_blank", "width=600,height=400");
+
+  // Create HTML content for the new window
+  const transactionHTML = `
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Transaction History</title>
+      <style>
+        body {
+          font-family: Arial, sans-serif;
+          margin: 0;
+          padding: 20px;
+          background-color: #f4f4f9;
+          color: #333;
+        }
+        h1 {
+          text-align: center;
+        }
+        ul {
+          list-style: none;
+          padding: 0;
+        }
+        li {
+          display: flex;
+          justify-content: space-between;
+          margin: 10px 0;
+          padding: 10px;
+          border: 1px solid #ddd;
+          border-radius: 5px;
+          background: #fff;
+        }
+        .income-item {
+          color: green;
+        }
+        .expense-item {
+          color: red;
+        }
+      </style>
+    </head>
+    <body>
+      <h1>Transaction History</h1>
+      <ul>
+        ${
+          transactions.length > 0
+            ? transactions
+                .map(
+                  (t) => `
+          <li class="${t.amount > 0 ? "income-item" : "expense-item"}">
+            <span>${t.description} (${t.date})</span>
+            <span>${t.amount > 0 ? "+" : "-"}N${Math.abs(t.amount).toFixed(2)}</span>
+          </li>
+        `
+                )
+                .join("")
+            : "<p>No transactions available.</p>"
+        }
+      </ul>
+    </body>
+    </html>
+  `;
+
+  // Write content to the new window
+  newWindow.document.open();
+  newWindow.document.write(transactionHTML);
+  newWindow.document.close();
+});
+
+
 
 // Add Transaction
 transactionForm.addEventListener("submit", (e) => {
