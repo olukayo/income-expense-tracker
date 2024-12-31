@@ -34,16 +34,35 @@ function updateUI() {
   incomeEl.textContent = formatter.format(income);
   expensesEl.textContent = formatter.format(expenses);
 
-  // Update Transaction List
-  transactionList.innerHTML = "";
+  // Clear the transaction list
+  while (transactionList.firstChild) {
+    transactionList.removeChild(transactionList.firstChild);
+  }
+
+  // Populate the transaction list
   transactions.forEach((t, index) => {
     const li = document.createElement("li");
     li.className = t.amount > 0 ? "income-item" : "expense-item";
-    li.innerHTML = `
-      ${t.description} <span>${t.amount > 0 ? "+" : "-"}${formatter.format(Math.abs(t.amount))}</span>
-      <small>${t.date}</small>
-      <button class="delete-btn" data-index="${index}">x</button>
-    `;
+
+    const description = document.createElement("span");
+    description.textContent = `${t.description}`;
+
+    const date = document.createElement("small");
+    date.textContent = t.date;
+
+    const amount = document.createElement("span");
+    amount.textContent = `${t.amount > 0 ? "+" : "-"}${formatter.format(Math.abs(t.amount))}`;
+
+    const deleteButton = document.createElement("button");
+    deleteButton.className = "delete-btn";
+    deleteButton.textContent = "x";
+    deleteButton.setAttribute("data-index", index);
+
+    li.appendChild(description);
+    li.appendChild(amount);
+    li.appendChild(date);
+    li.appendChild(deleteButton);
+
     transactionList.appendChild(li);
   });
 
@@ -51,22 +70,18 @@ function updateUI() {
   saveData();
 }
 
+
 // DOM Elements
 const transactionHistoryButton = document.getElementById("transaction-history");
 const transactionListContainer = document.getElementById("transaction-list");
 
 // Toggle Transaction History Visibility
+
+
 transactionHistoryButton.addEventListener("click", () => {
-  // If transaction list is hidden, show it
-  if (transactionListContainer.style.display === "none" || !transactionListContainer.style.display) {
-    transactionListContainer.style.display = "block";
-    transactionHistoryButton.textContent = "Hide Transaction History";
-  } else {
-    // If transaction list is visible, hide it
-    transactionListContainer.style.display = "none";
-    transactionHistoryButton.textContent = "Transaction History";
-  }
+  window.location.href = "transaction.html"; // Navigate to transaction.html
 });
+
 
 // Initialize UI
 function initializeTransactionList() {
@@ -152,8 +167,6 @@ const formatter = new Intl.NumberFormat("en-NG", {
   style: "currency",
   currency: "NGN",
 });
-
-
 
 // Initialize UI
 updateUI();
