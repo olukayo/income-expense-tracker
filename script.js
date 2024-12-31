@@ -37,7 +37,7 @@ function updateUI() {
   // Update Transaction List
   transactionList.innerHTML = "";
   transactions.forEach((t, index) => {
-    const li = document.createElement("li");
+    const li = document.getElementById("transaction-history");
     li.className = t.amount > 0 ? "income-item" : "expense-item";
     li.innerHTML = `
       ${t.description} <span>${t.amount > 0 ? "+" : "-"}${formatter.format(Math.abs(t.amount))}</span>
