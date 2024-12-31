@@ -154,9 +154,6 @@ const formatter = new Intl.NumberFormat("en-NG", {
 });
 
 
-transactionHistoryButton.addEventListener("click", () => {
-  window.location.href = "transaction.html"; // Navigate to transaction.html
-});
 
 // Initialize UI
 updateUI();
