@@ -73,9 +73,8 @@ function addTransaction(description, amount, date) {
   const transactions = getTransactionsByYearMonth(year, month);
   const newTransaction = { description, amount, date };
   transactions.push(newTransaction);
-
   saveTransactionsByYearMonth(year, month, transactions);
-  renderTransactions(year, month);  // Re-render transactions after adding a new one
+  renderTransactions(year, month);
 }
 
 // Delete a transaction
@@ -83,7 +82,7 @@ function deleteTransaction(year, month, index) {
   const transactions = getTransactionsByYearMonth(year, month);
   transactions.splice(index, 1);
   saveTransactionsByYearMonth(year, month, transactions);
-  renderTransactions(year, month); // Re-render transactions after deleting
+  renderTransactions(year, month);
   showFeedback("Transaction deleted!", "success");
 }
 
