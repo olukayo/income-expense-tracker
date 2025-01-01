@@ -40,31 +40,8 @@ function updateUI() {
   }
 
   // Populate the transaction list
-  transactions.forEach((t, index) => {
-    const li = document.createElement("li");
-    li.className = t.amount > 0 ? "income-item" : "expense-item";
-
-    const description = document.createElement("span");
-    description.textContent = `${t.description}`;
-
-    const date = document.createElement("small");
-    date.textContent = t.date;
-
-    const amount = document.createElement("span");
-    amount.textContent = `${t.amount > 0 ? "+" : "-"}${formatter.format(Math.abs(t.amount))}`;
-
-    const deleteButton = document.createElement("button");
-    deleteButton.className = "delete-btn";
-    deleteButton.textContent = "x";
-    deleteButton.setAttribute("data-index", index);
-
-    li.appendChild(description);
-    li.appendChild(amount);
-    li.appendChild(date);
-    li.appendChild(deleteButton);
-
-    transactionList.appendChild(li);
-  });
+  
+  
 
   // Save to Local Storage
   saveData();
