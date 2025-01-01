@@ -74,8 +74,8 @@ function addTransaction(description, amount, date) {
   const newTransaction = { description, amount, date };
   transactions.push(newTransaction);
 
-  console.log(`Saving transaction for ${year}-${month}:`, newTransaction); // Debugging line
   saveTransactionsByYearMonth(year, month, transactions);
+  renderTransactions(year, month);  // Re-render transactions after adding a new one
 }
 
 // Delete a transaction
@@ -83,7 +83,7 @@ function deleteTransaction(year, month, index) {
   const transactions = getTransactionsByYearMonth(year, month);
   transactions.splice(index, 1);
   saveTransactionsByYearMonth(year, month, transactions);
-  renderTransactions(year, month);
+  renderTransactions(year, month); // Re-render transactions after deleting
   showFeedback("Transaction deleted!", "success");
 }
 
