@@ -86,6 +86,10 @@ button:focus,
 #transaction-list {
   list-style: none;
   padding: 0;
+  max-height: 300px;
+  overflow-y: auto;
+
+
 }
 
 #transaction-list li {
@@ -267,4 +271,30 @@ li {
 }
 .expense-item {
   color: red;
+}
+
+.manual-balance {
+  display: flex;
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.manual-balance input {
+  flex: 1;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.manual-balance button {
+  padding: 0.5rem 1rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.manual-balance button:hover {
+  background-color: #0056b3;
 }
