@@ -12,6 +12,15 @@ const formatter = new Intl.NumberFormat("en-NG", {
 
 // Populate the year and month filters
 function populateFilters() {
+  // Assuming monthFilter and yearFilter are the IDs of the select elements
+  const monthFilter = document.getElementById("monthFilter");
+  const yearFilter = document.getElementById("yearFilter");
+
+  if (!monthFilter || !yearFilter) {
+    console.error("Month filter or year filter element not found.");
+    return;
+  }
+
   // Clear any existing options
   monthFilter.innerHTML = "";
   yearFilter.innerHTML = "";
@@ -37,12 +46,11 @@ function populateFilters() {
   const currentYear = new Date().getFullYear();
   for (let year = currentYear - 5; year <= currentYear; year++) {
     const option = document.createElement("option");
-    option.value = year;
-    option.textContent = year;
+    option.value = year.toString();
+    option.textContent = year.toString();
     yearFilter.appendChild(option);
   }
 }
-
 // Retrieve transactions for a specific year and month from localStorage
 function getTransactionsByYearMonth(year, month) {
   try {
@@ -114,44 +122,46 @@ function createTransactionElement(transaction, index, year, month) {
 }
 
 // Render transaction history for the selected year and month
-function renderTransactions(year, month = "all") {
-  transactionHistoryList.innerHTML = ""; // Clear existing transactions
+function renderTransactions(year, month) {
+  transactionHistoryList.innerHTML = '';
+  
+  const filteredTransactions = transactions.filter(transaction => {
+    const transactionDate = new Date(transaction.date);
+    const transactionYear = transactionDate.getFullYear();
+    const transactionMonth = (transactionDate.getMonth() + 1).toString().padStart(2, "0");
+    
+    return (year === "all" || transactionYear === parseInt(year)) &&
+           (month === "all" || transactionMonth === month);
+  });
 
-  const monthNames = [
-    "January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"
-  ];
-
-  if (month === "all") {
-    // Render transactions for all months in the selected year
-    for (let i = 1; i <= 12; i++) {
-      const monthKey = i.toString().padStart(2, "0");
-      const monthTransactions = getTransactionsByYearMonth(year, monthKey);
-
-      if (monthTransactions.length > 0) {
-        const monthHeading = document.createElement("h3");
-        monthHeading.textContent = `Transactions for ${monthNames[i - 1]} ${year}`;
-        transactionHistoryList.appendChild(monthHeading);
-
-        monthTransactions.forEach((t, index) => {
-          createTransactionElement(t, index, year, monthKey);
-        });
-      }
-    }
-  } else {
-    // Render transactions for the selected month of the selected year
-    const transactions = getTransactionsByYearMonth(year, month);
-    if (transactions.length > 0) {
-      transactions.forEach((t, index) => {
-        createTransactionElement(t, index, year, month);
-      });
-    } else {
-      const noTransactions = document.createElement("p");
-      noTransactions.textContent = "No transactions available.";
-      transactionHistoryList.appendChild(noTransactions);
-    }
+  if (filteredTransactions.length === 0) {
+    transactionHistoryList.innerHTML = '<p>No transactions found for this period.</p>';
+    return;
   }
+
+  filteredTransactions.forEach(transaction => {
+    const li = document.createElement("li");
+    li.className = transaction.amount > 0 ? "income-item" : "expense-item";
+    li.innerHTML = `
+      <span>${transaction.description} (${transaction.date})</span>
+      <span>${transaction.amount > 0 ? "+" : "-"}${formatter.format(Math.abs(transaction.amount))}</span>
+    `;
+    transactionHistoryList.appendChild(li);
+  });
 }
+
+// Add event listeners for filters
+yearFilter.addEventListener("change", () => {
+  renderTransactions(yearFilter.value, monthFilter.value);
+});
+
+monthFilter.addEventListener("change", () => {
+  renderTransactions(yearFilter.value, monthFilter.value);
+});
+
+// Initialize filters and render transactions
+populateFilters();
+renderTransactions("all", "all");
 
 // Show feedback message
 function showFeedback(message, type = "success") {

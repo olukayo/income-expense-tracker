@@ -21,32 +21,91 @@ function saveData() {
 }
 
 // Update UI
+// Update the updateUI function
 function updateUI() {
   const income = transactions
-    .filter((t) => t.amount > 0)
+    .filter(t => t.amount > 0)
     .reduce((sum, t) => sum + t.amount, 0);
+    
   const expenses = transactions
-    .filter((t) => t.amount < 0)
+    .filter(t => t.amount < 0)
     .reduce((sum, t) => sum + Math.abs(t.amount), 0);
 
-  // Update DOM
   balanceEl.textContent = formatter.format(totalBalance);
   incomeEl.textContent = formatter.format(income);
   expensesEl.textContent = formatter.format(expenses);
 
-  // Clear the transaction list
-  while (transactionList.firstChild) {
-    transactionList.removeChild(transactionList.firstChild);
-  }
-
-  // Populate the transaction list
+  // Clear and update transaction list
+  transactionList.innerHTML = '';
   
-  
+  transactions.forEach((transaction, index) => {
+    const li = document.createElement("li");
+    li.className = transaction.amount > 0 ? "income-item" : "expense-item";
+    li.innerHTML = `
+      <span>${transaction.description} (${transaction.date})</span>
+      <span>${transaction.amount > 0 ? "+" : "-"}${formatter.format(Math.abs(transaction.amount))}</span>
+      <button class="delete-btn" data-index="${index}">×</button>
+    `;
+    transactionList.appendChild(li);
+  });
 
-  // Save to Local Storage
   saveData();
 }
 
+// Update form submission
+// Update the updateUI function
+function updateUI() {
+  const income = transactions
+    .filter(t => t.amount > 0)
+    .reduce((sum, t) => sum + t.amount, 0);
+    
+  const expenses = transactions
+    .filter(t => t.amount < 0)
+    .reduce((sum, t) => sum + Math.abs(t.amount), 0);
+
+  balanceEl.textContent = formatter.format(totalBalance);
+  incomeEl.textContent = formatter.format(income);
+  expensesEl.textContent = formatter.format(expenses);
+
+  // Clear and update transaction list
+  transactionList.innerHTML = '';
+  
+  transactions.forEach((transaction, index) => {
+    const li = document.createElement("li");
+    li.className = transaction.amount > 0 ? "income-item" : "expense-item";
+    li.innerHTML = `
+      <span>${transaction.description} (${transaction.date})</span>
+      <span>${transaction.amount > 0 ? "+" : "-"}${formatter.format(Math.abs(transaction.amount))}</span>
+      <button class="delete-btn" data-index="${index}">×</button>
+    `;
+    transactionList.appendChild(li);
+  });
+
+  saveData();
+}
+
+// Update form submission
+transactionForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  
+  const description = document.getElementById("description").value.trim();
+  const amount = parseFloat(document.getElementById("amount").value);
+  const date = document.getElementById("date").value || new Date().toISOString().split("T")[0];
+
+  if (description && !isNaN(amount)) {
+    const transaction = {
+      description,
+      amount,
+      date
+    };
+
+    transactions.push(transaction);
+    totalBalance += amount;
+    
+    updateUI();
+    transactionForm.reset();
+  }
+});
 
 // DOM Elements
 const transactionHistoryButton = document.getElementById("transaction-history");
@@ -56,9 +115,10 @@ const transactionListContainer = document.getElementById("transaction-list");
 
 
 transactionHistoryButton.addEventListener("click", () => {
-  window.location.href = "transaction.html"; // Navigate to transaction.html
+  const currentDate = new Date();
+  const currentYear = currentDate.getFullYear();
+  renderTransactions(currentYear, "all");
 });
-
 
 // Initialize UI
 function initializeTransactionList() {
@@ -109,10 +169,10 @@ transactionForm.addEventListener("submit", (e) => {
     return;
   }
 
-  // Update total balance and add transaction
-  totalBalance += amount;
-  transactions.push({ description, amount, date });
-  transactions.sort((a, b) => new Date(a.date) - new Date(b.date)); // Ensure sorting after adding
+  // Use the addTransaction function instead of directly pushing to transactions array
+  addTransaction(description, amount, date);
+  
+  // Update UI and reset form
   updateUI();
   transactionForm.reset();
 });
