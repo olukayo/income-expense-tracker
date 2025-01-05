@@ -35,6 +35,12 @@ select {
   list-style-type: none;
   padding: 0;
   margin: 0;
+  max-height: 400px; /* Adjust the height as needed */
+  overflow-y: auto;
+  position: sticky;
+  top: 0;
+  background-color: white; /* Ensure background color to avoid overlap issues */
+  z-index: 1000; /* Ensure it stays above other elements */
 }
 
 #transaction-history-list li {
@@ -42,6 +48,9 @@ select {
   margin-bottom: 10px;
   padding: 10px;
   background-color: #f9f9f9;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeInUp 0.5s forwards;
 }
 
 .income-item {
@@ -62,6 +71,7 @@ select {
   border: none;
   padding: 5px 10px;
   cursor: pointer;
+  margin-right: 0; /* Remove margin from the last button */
 }
 
 #transaction-history-list li button.delete-btn:hover {
