@@ -133,6 +133,15 @@ button:focus,
 .delete-btn:hover {
   color: darkred;
 }
+body.dark-mode {
+  background-color: #121212;
+  color: black;
+}
+.dark-mode button {
+  background-color: #333;
+  color: white;
+}
+
 
 /* Responsive Design */
 @media (max-width: 600px) {

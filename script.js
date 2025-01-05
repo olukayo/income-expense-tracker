@@ -9,8 +9,7 @@ const transactionList = document.getElementById("transaction-list");
 const resetButton = document.getElementById("reset-button");
 const transactionHistoryButton = document.getElementById("transaction-history");
 const transactionListContainer = document.getElementById("transaction-list");
-const newBalanceInput = document.getElementById("new-balance");
-const setBalanceBtn = document.getElementById("set-balance-btn"); // REMOVE THIS LINE
+const themeButton = document.getElementById("toggle-theme");
 
 // ==========================
 // 💾 Local Storage Handling
@@ -74,16 +73,30 @@ transactionForm.addEventListener("submit", (e) => {
     e.preventDefault();
     const description = document.getElementById("description").value.trim();
     const amount = parseFloat(document.getElementById("amount").value);
-    const date = document.getElementById("date").value || new Date().toISOString().split("T")[0];
+    const dateInput = document.getElementById("date").value || new Date().toISOString().split("T")[0];
+
+    // Capture current time in HH:MM AM/PM format
+    const now = new Date();
+    const time = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
 
     if (!description || isNaN(amount) || amount === 0) {
         alert("Please enter a valid description and amount.");
         return;
     }
 
-    transactions.push({ description, amount, date });
-    totalBalance += amount; // Update balance on new transaction
+    // Update totalBalance
+    totalBalance += amount;
+
+    // Add the new transaction
+    transactions.push({ description, amount, date: dateInput, time });
+
+    // Save the updated data
+    saveData();
+
+    // Update the UI
     updateUI();
+
+    // Reset the form
     transactionForm.reset();
 });
 
@@ -116,6 +129,25 @@ transactionHistoryButton.addEventListener("click", () => {
     transactionHistoryButton.textContent = transactionListContainer.style.display === "none" ? "Show Transactions" : "Hide Transactions";
 });
 
+// 📌 Toggle Theme
+themeButton.addEventListener("click", () => {
+    document.body.classList.toggle("dark-mode");
+    localStorage.setItem("theme", document.body.classList.contains("dark-mode") ? "dark" : "light");
+});
+
+// Apply saved theme on load
+if (localStorage.getItem("theme") === "dark") {
+    document.body.classList.add("dark-mode");
+}
+
+// Add loading effect before navigating
+transactionHistoryButton.addEventListener("click", () => {
+    transactionHistoryButton.textContent = "Loading Transactions...";
+    setTimeout(() => {
+        window.location.href = "transaction.html";  // Navigate after 0.5s delay
+    }, 500); 
+});
+
 // ==========================
 // 🚀 Initialization
 // ==========================
@@ -124,17 +156,6 @@ function initializeTransactionList() {
         transactionListContainer.innerHTML = "<p>No transactions available.</p>"; // Provide feedback when empty
     }
 }
-
-// ==========================
-// Event Listeners
-// ==========================
-
-
-transactionHistoryButton.addEventListener("click", () => {
-    // Redirect to transaction history page
-    window.location.href = "transaction.html";  // Navigate to transaction.html
-});
-
 
 initializeTransactionList();
 updateUI();

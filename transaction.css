@@ -93,3 +93,213 @@ select {
 #back-button:hover {
   background-color: #0056b3;
 }
+body {
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+}
+
+h1, h3 {
+  text-align: center;
+}
+
+/* 🔍 Search Bar */
+#search-bar {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* 📊 Summary Section */
+.summary {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+/* 📜 Transaction List */
+#transaction-history-list {
+  list-style: none;
+  padding: 0;
+}
+
+#transaction-history-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+#transaction-history-list li span {
+  flex: 1;
+}
+
+/* 📁 CSV Controls */
+.csv-controls {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.file-label {
+  background: #007bff;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#export-csv {
+  background: #28a745;
+  color: white;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+#export-csv:hover, .file-label:hover {
+  opacity: 0.8;
+}
+
+/* 📊 Chart Styling */
+.chart-container {
+  text-align: center;
+  margin: 20px 0;
+}
+
+canvas {
+  width: 100% !important;
+  max-width: 400px;
+  height: auto !important;
+  margin: auto;
+}
+
+/* 🔙 Back Button */
+.back-btn {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.back-btn:hover {
+  opacity: 0.8;
+}
+/* Smooth transition for transaction list */
+#transaction-history-list li {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeInUp 0.5s forwards;
+}
+
+/* Fade-in effect */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Button hover effect */
+button {
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  transform: scale(1.05);
+}
+
+/* Add space between edit and delete buttons */
+#transaction-history-list li button {
+  margin-right: 10px;
+}
+
+#transaction-history-list li button.delete-btn {
+  margin-right: 0; /* Remove margin from the last button */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    width: 90%;
+    padding: 10px;
+  }
+
+  .filter-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .filter-container label,
+  .filter-container select {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  #transaction-history-list li {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  #transaction-history-list li span,
+  #transaction-history-list li button {
+    width: 100%;
+    text-align: left;
+    margin-bottom: 5px;
+  }
+
+  button {
+    width: 100%;
+    padding: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    width: 100%;
+    padding: 5px;
+  }
+
+  .filter-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .filter-container label,
+  .filter-container select {
+    width: 100%;
+    margin-bottom: 5px;
+  }
+
+  #transaction-history-list li {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  #transaction-history-list li span,
+  #transaction-history-list li button {
+    width: 100%;
+    text-align: left;
+    margin-bottom: 5px;
+  }
+
+  button {
+    width: 100%;
+    padding: 8px;
+  }
+}
