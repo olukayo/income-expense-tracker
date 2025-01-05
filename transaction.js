@@ -116,7 +116,9 @@ function displayTransactions(transactionsToDisplay) {
         document.querySelectorAll(".delete-btn").forEach(button => {
             button.addEventListener("click", (e) => {
                 const index = e.target.getAttribute("data-index");
-                deleteTransaction(index);
+                if (confirm("Are you sure you want to delete this transaction?")) {
+                    deleteTransaction(index);
+                }
             });
         });
     }
